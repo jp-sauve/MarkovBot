@@ -1,0 +1,6 @@
+dist/
+node_modules/
+config.json
+markov.db
+markov.db-shm
+markov.db-wal

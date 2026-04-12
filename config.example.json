@@ -1,0 +1,12 @@
+{
+  "server": "irc.libera.chat",
+  "port": 6697,
+  "tls": true,
+  "nick": "markovbot",
+  "channels": ["#BotLab"],
+  "replyProbability": 0.02,
+  "maxResponseWords": 30,
+  "markovOrder": 2,
+  "ignoredNicks": ["ChanServ", "NickServ"],
+  "dbPath": "markov.db"
+}

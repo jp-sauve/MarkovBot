@@ -8,5 +8,9 @@
   "maxResponseWords": 30,
   "markovOrder": 2,
   "ignoredNicks": ["ChanServ", "NickServ"],
-  "dbPath": "markov.db"
+  "dbPath": "markov.db",
+  "discordToken": "",
+  "discordClientId": "",
+  "discordGuildIds": [],
+  "discordChannels": []
 }

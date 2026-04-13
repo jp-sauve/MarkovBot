@@ -30,3 +30,6 @@ lerna-debug.log*
 .pnpm-debug.log*
 logs
 *.log
+
+# Local notes
+data.bak*

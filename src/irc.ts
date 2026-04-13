@@ -201,7 +201,10 @@ export async function startIrcBot(
   });
 
   client.on("message", (event: MessageEvent) => {
-    if (!config.channels.includes(event.target)) {
+    const isPrivateMessage =
+      event.target.toLowerCase() === activeNick.toLowerCase();
+
+    if (!isPrivateMessage && !config.channels.includes(event.target)) {
       return;
     }
 
@@ -214,6 +217,11 @@ export async function startIrcBot(
     }
 
     markov.learn(event.message);
+
+    if (isPrivateMessage) {
+      console.log(`IRC private message from ${event.nick}: ${event.message}`);
+      return;
+    }
 
     if (!shouldRespond(event.message, config)) {
       return;

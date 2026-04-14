@@ -82,6 +82,15 @@ npm run build
 npm start
 ```
 
+### Stopping the Bot
+
+The bot shuts down gracefully on:
+
+- **`Ctrl+C`** (SIGINT) — when running in the terminal
+- **`kill <PID>`** (SIGTERM) — from a process manager or another terminal
+
+On shutdown, all bot connectors (IRC and Discord) are stopped and the database is closed cleanly.
+
 ## Usage
 
 - The bot will join configured IRC channels and/or Discord servers.

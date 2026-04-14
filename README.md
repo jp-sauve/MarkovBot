@@ -1,6 +1,6 @@
 # MarkovBot
 
-MarkovBot is a chat bot that uses Markov chains to generate text responses. It supports both IRC and Discord, and can be configured to relay messages between platforms.
+MarkovBot is a chat bot that uses Markov chains to generate text responses. It supports both IRC and Discord, and also includes an optional HexChat relay script for relaying messages between HexChat and the bot.
 
 ## Features
 

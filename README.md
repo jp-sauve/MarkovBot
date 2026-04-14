@@ -69,7 +69,7 @@ You can also use environment variables (see `src/config.ts`).
 
 ### Running the Bot
 
-#### Development (TypeScript, hot reload)
+#### Development (TypeScript)
 
 ```sh
 npm run dev

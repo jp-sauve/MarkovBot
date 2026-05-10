@@ -1,0 +1,9 @@
+talking through a maze blind
+matching colours rapidly
+multi-vision maze (sets of coloured walls)
+traps and walls 
+battleships? red line, blue line, how many cells enclosed?
+css battle
+3 person paint by number
+blind drawing with shapes
+Regex Rush

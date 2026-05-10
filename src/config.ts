@@ -47,9 +47,9 @@ const DEFAULT_CONFIG = {
   channels: ["#markovbot"],
   replyProbability: 0.02,
   maxResponseWords: 30,
-  markovOrder: 2,
+  markovOrder: 3,
   ignoredNicks: ["ChanServ", "NickServ"],
-  dbPath: "markov.db"
+  dbPath: "markov3.db"
 };
 
 function parseNumber(value: string | undefined, fallback: number): number {

@@ -1,11 +1,11 @@
 import dotenv from "dotenv";
 
-import { loadConfig } from "./config.js";
-import { MarkovDatabase } from "./db.js";
-import { startDiscordBot } from "./discord.js";
-import { startIrcBot } from "./irc.js";
-import { MarkovEngine } from "./markov.js";
-import { PosTagger } from "./pos.js";
+import { loadConfig } from "./config/index.js";
+import { MarkovDatabase } from "./db/index.js";
+import { startDiscordBot } from "./connectors/discord.js";
+import { startIrcBot } from "./connectors/irc.js";
+import { MarkovEngine } from "./engine/markov.js";
+import { PosTagger } from "./engine/pos.js";
 
 dotenv.config();
 

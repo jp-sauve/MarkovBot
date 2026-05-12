@@ -2,7 +2,7 @@ import {
   MarkovDatabase,
   type SentenceShapeFrequency,
   type WeightedPrefix
-} from "./db.js";
+} from "../db/index.js";
 import type { PosTagger } from "./pos.js";
 import { getPosBigramBoost } from "./pos_grammar.js";
 

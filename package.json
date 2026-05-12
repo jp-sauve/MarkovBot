@@ -7,10 +7,10 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "dev": "tsx src/index.ts",
-    "migrate": "tsx src/migrate.ts",
-    "label": "tsx src/label_worker.ts",
+    "migrate": "tsx src/db/migrate.ts",
+    "label": "tsx src/scripts/label_worker.ts",
     "test": "npm run build && node --test dist/**/*.test.js",
-    "verify:generation": "tsx src/generation_probe.ts",
+    "verify:generation": "tsx src/scripts/generation_probe.ts",
     "start": "node dist/index.js"
   },
   "keywords": [

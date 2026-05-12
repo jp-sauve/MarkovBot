@@ -1,7 +1,11 @@
 import IRC from "irc-framework";
 
-import type { Config } from "./config.js";
-import { MarkovEngine, looksLikeCommand, pickSeedWord } from "./markov.js";
+import type { Config } from "../config/index.js";
+import {
+  MarkovEngine,
+  looksLikeCommand,
+  pickSeedWord
+} from "../engine/markov.js";
 
 interface MessageEvent {
   message: string;

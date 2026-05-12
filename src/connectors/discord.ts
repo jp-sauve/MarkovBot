@@ -10,8 +10,12 @@ import {
   type RESTPostAPIApplicationCommandsJSONBody
 } from "discord.js";
 
-import type { Config, DiscordConfig } from "./config.js";
-import { MarkovEngine, looksLikeCommand, pickSeedWord } from "./markov.js";
+import type { Config, DiscordConfig } from "../config/index.js";
+import {
+  MarkovEngine,
+  looksLikeCommand,
+  pickSeedWord
+} from "../engine/markov.js";
 
 const COMMANDS: RESTPostAPIApplicationCommandsJSONBody[] = [
   new SlashCommandBuilder()

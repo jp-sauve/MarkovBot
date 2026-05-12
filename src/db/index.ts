@@ -1,6 +1,6 @@
 import Database from "better-sqlite3";
 
-import type { TaggedWord } from "./pos.js";
+import type { TaggedWord } from "../engine/pos.js";
 
 export interface WeightedSuffix {
   suffix: string;
@@ -277,9 +277,7 @@ export class MarkovDatabase {
           "UPDATE output_log SET label_id = NULL, label_meta = NULL WHERE label_id = ?"
         )
         .run(id);
-      this.database
-        .prepare("DELETE FROM output_labels WHERE id = ?")
-        .run(id);
+      this.database.prepare("DELETE FROM output_labels WHERE id = ?").run(id);
     });
     this.incrementLabelCount = this.database.prepare(`
       UPDATE output_labels SET count = count + 1 WHERE id = ?
@@ -288,15 +286,9 @@ export class MarkovDatabase {
       UPDATE output_labels SET count = MAX(0, count - 1) WHERE id = ?
     `);
     this.setOutputLabelStmt = this.database.transaction(
-      (
-        outputLogId: number,
-        labelId: number,
-        metaJson: string
-      ) => {
+      (outputLogId: number, labelId: number, metaJson: string) => {
         const existing = this.database
-          .prepare(
-            "SELECT label_id AS labelId FROM output_log WHERE id = ?"
-          )
+          .prepare("SELECT label_id AS labelId FROM output_log WHERE id = ?")
           .get(outputLogId) as { labelId: number | null } | undefined;
         if (existing?.labelId != null) {
           this.decrementLabelCount.run(existing.labelId);
@@ -312,9 +304,7 @@ export class MarkovDatabase {
     this.clearOutputLabelStmt = this.database.transaction(
       (outputLogId: number) => {
         const existing = this.database
-          .prepare(
-            "SELECT label_id AS labelId FROM output_log WHERE id = ?"
-          )
+          .prepare("SELECT label_id AS labelId FROM output_log WHERE id = ?")
           .get(outputLogId) as { labelId: number | null } | undefined;
         if (existing?.labelId != null) {
           this.decrementLabelCount.run(existing.labelId);

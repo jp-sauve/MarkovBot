@@ -17,15 +17,20 @@
 
 ## Architecture
 - [src/index.ts](src/index.ts): loads env/config, opens the database, starts IRC and optional Discord connectors, handles shutdown.
-- [src/config.ts](src/config.ts): merges `config.json` and `MARKOV_*` environment variables, validates runtime settings, enables Discord only when fully configured.
-- [src/db.ts](src/db.ts): owns the SQLite schema and weighted prefix/suffix queries.
-- [src/markov.ts](src/markov.ts): tokenization, command detection, seed-word selection, learning, and response generation.
-- [src/irc.ts](src/irc.ts): IRC connector, registration handling, nick fallback, message learning, channel replies.
-- [src/discord.ts](src/discord.ts): Discord connector, slash-command registration, mention resolution, message learning, channel replies.
+- [src/config/index.ts](src/config/index.ts): merges `config.json` and `MARKOV_*` environment variables, validates runtime settings, enables Discord only when fully configured.
+- [src/db/index.ts](src/db/index.ts): owns the SQLite schema and weighted prefix/suffix queries.
+- [src/db/migrate.ts](src/db/migrate.ts): one-time migration script for existing databases.
+- [src/engine/markov.ts](src/engine/markov.ts): tokenization, command detection, seed-word selection, learning, and response generation.
+- [src/engine/pos.ts](src/engine/pos.ts): POS tagger wrapper.
+- [src/engine/pos_grammar.ts](src/engine/pos_grammar.ts): POS bigram boost table.
+- [src/connectors/irc.ts](src/connectors/irc.ts): IRC connector, registration handling, nick fallback, message learning, channel replies.
+- [src/connectors/discord.ts](src/connectors/discord.ts): Discord connector, slash-command registration, mention resolution, message learning, channel replies.
+- [src/scripts/generation_probe.ts](src/scripts/generation_probe.ts): dev tool for probing generation quality.
+- [src/scripts/label_worker.ts](src/scripts/label_worker.ts): dev tool for labeling bot outputs.
 
 ## Conventions
 - Keep ESM import specifiers with `.js` extensions in TypeScript source.
-- Prefer putting shared chat behavior in `markov.ts`, `config.ts`, or `db.ts` instead of duplicating logic across IRC and Discord connectors.
+- Prefer putting shared chat behavior in `engine/markov.ts`, `config/index.ts`, or `db/index.ts` instead of duplicating logic across IRC and Discord connectors.
 - Keep changes minimal and consistent with existing strict TypeScript style.
 
 ## Project-Specific Gotchas
@@ -36,5 +41,5 @@
 
 ## Useful Starting Points
 - Runtime boot flow: [src/index.ts](src/index.ts)
-- Config loading and env names: [src/config.ts](src/config.ts)
-- Shared text generation behavior: [src/markov.ts](src/markov.ts)
+- Config loading and env names: [src/config/index.ts](src/config/index.ts)
+- Shared text generation behavior: [src/engine/markov.ts](src/engine/markov.ts)

@@ -1,7 +1,11 @@
 import IRC from "irc-framework";
 
-import type { Config } from "./config.js";
-import { MarkovEngine, looksLikeCommand, pickSeedWord } from "./markov.js";
+import type { Config } from "../config/index.js";
+import {
+  MarkovEngine,
+  looksLikeCommand,
+  pickSeedWord
+} from "../engine/markov.js";
 
 interface MessageEvent {
   message: string;
@@ -57,8 +61,17 @@ function isIgnoredNick(nick: string, config: Config): boolean {
   );
 }
 
-function shouldRespond(message: string, config: Config): boolean {
+function shouldRespond(
+  message: string,
+  config: Config,
+  forced?: boolean
+): boolean {
   const mentionPattern = new RegExp(`\\b${escapeRegExp(config.nick)}\\b`, "i");
+
+  if (forced) {
+    return true;
+  }
+
   return (
     mentionPattern.test(message) || Math.random() < config.replyProbability
   );
@@ -203,6 +216,7 @@ export async function startIrcBot(
   client.on("message", (event: MessageEvent) => {
     const isPrivateMessage =
       event.target.toLowerCase() === activeNick.toLowerCase();
+    const shouldRespondToChannel = shouldRespond(event.message, config);
 
     if (!isPrivateMessage && !config.channels.includes(event.target)) {
       return;
@@ -220,15 +234,30 @@ export async function startIrcBot(
 
     if (isPrivateMessage) {
       console.log(`IRC private message from ${event.nick}: ${event.message}`);
+
+      if (config.logShadowResponses) {
+        markov.generateAndLog(pickSeedWord(event.message, config.nick), {
+          source: "irc",
+          channel: `pm:${event.nick}`
+        });
+      }
+
       return;
     }
 
-    if (!shouldRespond(event.message, config)) {
+    if (!shouldRespondToChannel && !config.logShadowResponses) {
       return;
     }
 
-    const response = markov.generate(pickSeedWord(event.message, config.nick));
-    if (!response) {
+    const response = markov.generateAndLog(
+      pickSeedWord(event.message, config.nick),
+      {
+        source: "irc",
+        channel: event.target
+      }
+    );
+
+    if (!response || !shouldRespondToChannel) {
       return;
     }
 

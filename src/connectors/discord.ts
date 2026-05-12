@@ -10,8 +10,12 @@ import {
   type RESTPostAPIApplicationCommandsJSONBody
 } from "discord.js";
 
-import type { Config, DiscordConfig } from "./config.js";
-import { MarkovEngine, looksLikeCommand, pickSeedWord } from "./markov.js";
+import type { Config, DiscordConfig } from "../config/index.js";
+import {
+  MarkovEngine,
+  looksLikeCommand,
+  pickSeedWord
+} from "../engine/markov.js";
 
 const COMMANDS: RESTPostAPIApplicationCommandsJSONBody[] = [
   new SlashCommandBuilder()
@@ -175,7 +179,10 @@ async function handleSlashCommand(
 
   if (interaction.commandName === "markov") {
     const prompt = interaction.options.getString("prompt") ?? undefined;
-    const response = markov.generate(prompt);
+    const response = markov.generateAndLog(prompt, {
+      source: "discord",
+      channel: interaction.channelId
+    });
     await interaction.reply(
       response || "I do not have enough training data yet."
     );
@@ -228,8 +235,12 @@ export async function startDiscordBot(
       return;
     }
 
-    const response = markov.generate(
-      pickSeedWord(resolvedContent, client.user?.username ?? config.nick)
+    const response = markov.generateAndLog(
+      pickSeedWord(resolvedContent, client.user?.username ?? config.nick),
+      {
+        source: "discord",
+        channel: message.channelId
+      }
     );
     if (!response) {
       return;

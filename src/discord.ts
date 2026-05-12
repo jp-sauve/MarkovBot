@@ -175,7 +175,10 @@ async function handleSlashCommand(
 
   if (interaction.commandName === "markov") {
     const prompt = interaction.options.getString("prompt") ?? undefined;
-    const response = markov.generate(prompt);
+    const response = markov.generateAndLog(prompt, {
+      source: "discord",
+      channel: interaction.channelId
+    });
     await interaction.reply(
       response || "I do not have enough training data yet."
     );
@@ -228,8 +231,12 @@ export async function startDiscordBot(
       return;
     }
 
-    const response = markov.generate(
-      pickSeedWord(resolvedContent, client.user?.username ?? config.nick)
+    const response = markov.generateAndLog(
+      pickSeedWord(resolvedContent, client.user?.username ?? config.nick),
+      {
+        source: "discord",
+        channel: message.channelId
+      }
     );
     if (!response) {
       return;

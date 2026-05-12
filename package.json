@@ -7,6 +7,10 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "dev": "tsx src/index.ts",
+    "migrate": "tsx src/migrate.ts",
+    "label": "tsx src/label_worker.ts",
+    "test": "npm run build && node --test dist/**/*.test.js",
+    "verify:generation": "tsx src/generation_probe.ts",
     "start": "node dist/index.js"
   },
   "keywords": [
@@ -18,7 +22,8 @@
     "better-sqlite3": "^12.9.0",
     "discord.js": "^14.19.3",
     "dotenv": "^16.4.7",
-    "irc-framework": "^4.14.0"
+    "irc-framework": "^4.14.0",
+    "natural": "^8.1.1"
   },
   "devDependencies": {
     "@types/better-sqlite3": "^7.6.13",

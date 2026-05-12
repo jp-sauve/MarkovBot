@@ -5,6 +5,7 @@ import { MarkovDatabase } from "./db.js";
 import { startDiscordBot } from "./discord.js";
 import { startIrcBot } from "./irc.js";
 import { MarkovEngine } from "./markov.js";
+import { PosTagger } from "./pos.js";
 
 dotenv.config();
 
@@ -14,10 +15,18 @@ interface RuntimeHandle {
 
 const config = loadConfig();
 const database = new MarkovDatabase(config.dbPath);
-const markov = new MarkovEngine(database, {
-  order: config.markovOrder,
-  maxResponseWords: config.maxResponseWords
-});
+const posTagger = new PosTagger();
+const markov = new MarkovEngine(
+  database,
+  {
+    order: config.markovOrder,
+    minResponseWords: config.minResponseWords,
+    maxResponseWords: config.maxResponseWords,
+    fallbackResponses: config.fallbackResponses,
+    shapeBoostFactor: config.shapeBoostFactor
+  },
+  posTagger
+);
 const runtimeHandles: RuntimeHandle[] = [];
 
 function registerHandle(handle: RuntimeHandle): void {

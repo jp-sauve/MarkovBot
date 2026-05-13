@@ -1,10 +1,11 @@
 import dotenv from "dotenv";
 
-import { loadConfig } from "./config.js";
-import { MarkovDatabase } from "./db.js";
-import { startDiscordBot } from "./discord.js";
-import { startIrcBot } from "./irc.js";
-import { MarkovEngine } from "./markov.js";
+import { loadConfig } from "./config/index.js";
+import { MarkovDatabase } from "./db/index.js";
+import { startDiscordBot } from "./connectors/discord.js";
+import { startIrcBot } from "./connectors/irc.js";
+import { MarkovEngine } from "./engine/markov.js";
+import { PosTagger } from "./engine/pos.js";
 
 dotenv.config();
 
@@ -14,10 +15,18 @@ interface RuntimeHandle {
 
 const config = loadConfig();
 const database = new MarkovDatabase(config.dbPath);
-const markov = new MarkovEngine(database, {
-  order: config.markovOrder,
-  maxResponseWords: config.maxResponseWords
-});
+const posTagger = new PosTagger();
+const markov = new MarkovEngine(
+  database,
+  {
+    order: config.markovOrder,
+    minResponseWords: config.minResponseWords,
+    maxResponseWords: config.maxResponseWords,
+    fallbackResponses: config.fallbackResponses,
+    shapeBoostFactor: config.shapeBoostFactor
+  },
+  posTagger
+);
 const runtimeHandles: RuntimeHandle[] = [];
 
 function registerHandle(handle: RuntimeHandle): void {

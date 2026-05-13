@@ -2,7 +2,15 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { MarkovDatabase } from "../db/index.js";
-import { MarkovEngine, tokenize } from "./markov.js";
+import {
+  isStructurallyCompleteResponse,
+  looksLikeCommand,
+  MarkovEngine,
+  pickSeedWord,
+  postProcess,
+  tokenize,
+  trimToken
+} from "./markov.js";
 import { PosTagger } from "./pos.js";
 
 function createOptions(
@@ -244,4 +252,47 @@ test("generation falls back instead of returning a fragment ending in a determin
   assert.equal(engine.generate(), "I don't know.");
 
   db.close();
+});
+
+test("tokenize removes URLs, emoji, control characters, and collapses whitespace", () => {
+  assert.deepEqual(
+    tokenize("hi\u0007   https://example.test/path wow 🙂  ok"),
+    ["hi", "wow", "ok"]
+  );
+});
+
+test("tokenize returns an empty array when cleanup removes all content", () => {
+  assert.deepEqual(tokenize(" \n https://example.test 🙂 \t "), []);
+});
+
+test("pickSeedWord removes bot nick and ignores tokens shorter than three characters", () => {
+  assert.equal(
+    pickSeedWord("markovbot hi there markovbot", "markovbot"),
+    "there"
+  );
+  assert.equal(pickSeedWord("markovbot yo", "markovbot"), undefined);
+});
+
+test("looksLikeCommand detects command prefixes and ignores ordinary text", () => {
+  assert.equal(looksLikeCommand("!help"), true);
+  assert.equal(looksLikeCommand(".reload"), true);
+  assert.equal(looksLikeCommand("+topic bots"), true);
+  assert.equal(looksLikeCommand("hello !help"), false);
+  assert.equal(looksLikeCommand("just normal text"), false);
+});
+
+test("trimToken removes detached outer punctuation but preserves internal apostrophes", () => {
+  assert.equal(trimToken("...'hello'..."), "hello");
+  assert.equal(trimToken("won't"), "won't");
+});
+
+test("postProcess capitalizes output and picks punctuation from the last word", () => {
+  assert.equal(postProcess("hello there"), "Hello there.");
+  assert.equal(postProcess("  why  "), "Why?");
+});
+
+test("isStructurallyCompleteResponse enforces minimum length and rejects fragment endings", () => {
+  assert.equal(isStructurallyCompleteResponse("fox runs", 2), true);
+  assert.equal(isStructurallyCompleteResponse("fox", 2), false);
+  assert.equal(isStructurallyCompleteResponse("depending on the", 1), false);
 });

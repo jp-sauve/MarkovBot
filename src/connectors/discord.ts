@@ -34,7 +34,7 @@ const COMMANDS: RESTPostAPIApplicationCommandsJSONBody[] = [
     .toJSON()
 ];
 
-function isIgnoredAuthor(message: Message, config: Config): boolean {
+export function isIgnoredAuthor(message: Message, config: Config): boolean {
   if (message.author.bot) {
     return true;
   }
@@ -47,7 +47,7 @@ function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-function resolveMentions(message: Message): string {
+export function resolveMentions(message: Message): string {
   const withUserMentions = message.content.replace(
     /<@!?(\d+)>/g,
     (mention, userId) => {
@@ -75,7 +75,7 @@ function resolveMentions(message: Message): string {
   });
 }
 
-function shouldRespond(
+export function shouldRespond(
   message: Message,
   client: Client,
   config: Config

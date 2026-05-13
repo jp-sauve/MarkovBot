@@ -94,7 +94,9 @@ function parseList(value: string | undefined, fallback: string[]): string[] {
 
 function readJsonConfig(configPath: string): RawConfig {
   if (!existsSync(configPath)) {
-    return {};
+    throw new Error(
+      `Config file not found at ${configPath}. Create config.json before starting the bot.`
+    );
   }
 
   return JSON.parse(readFileSync(configPath, "utf8")) as RawConfig;

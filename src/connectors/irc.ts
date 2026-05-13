@@ -53,7 +53,7 @@ function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-function isIgnoredNick(nick: string, config: Config): boolean {
+export function isIgnoredNick(nick: string, config: Config): boolean {
   const lowered = nick.toLowerCase();
   return (
     lowered === config.nick.toLowerCase() ||
@@ -61,7 +61,7 @@ function isIgnoredNick(nick: string, config: Config): boolean {
   );
 }
 
-function shouldRespond(
+export function shouldRespond(
   message: string,
   config: Config,
   forced?: boolean
@@ -77,7 +77,7 @@ function shouldRespond(
   );
 }
 
-function makeAlternateNick(baseNick: string, attempt: number): string {
+export function makeAlternateNick(baseNick: string, attempt: number): string {
   const suffix = attempt === 1 ? "_" : `_${attempt}`;
   const maxBaseLength = Math.max(1, 30 - suffix.length);
   return `${baseNick.slice(0, maxBaseLength)}${suffix}`;

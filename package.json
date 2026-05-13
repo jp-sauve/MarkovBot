@@ -9,7 +9,8 @@
     "dev": "tsx src/index.ts",
     "migrate": "tsx src/db/migrate.ts",
     "label": "tsx src/scripts/label_worker.ts",
-    "test": "npm run build && node --test dist/**/*.test.js",
+    "test": "npm run build && c8 --reporter=text --reporter=lcov node --test dist/**/*.test.js",
+    "test:coverage": "npm run test",
     "verify:generation": "tsx src/scripts/generation_probe.ts",
     "start": "node dist/index.js"
   },
@@ -28,6 +29,7 @@
   "devDependencies": {
     "@types/better-sqlite3": "^7.6.13",
     "@types/node": "^22.15.0",
+    "c8": "^11.0.0",
     "tsx": "^4.19.3",
     "typescript": "^5.8.3"
   }

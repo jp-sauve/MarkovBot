@@ -4,7 +4,7 @@
 - TypeScript Node.js project using NodeNext ESM.
 - Purpose: shared Markov-chain chat bot for IRC and optionally Discord.
 - Entry point: [src/index.ts](src/index.ts)
-- Shared Markov logic lives in [src/markov.ts](src/markov.ts) and persistence in [src/db.ts](src/db.ts).
+- Shared Markov logic lives in [src/engine/markov.ts](src/engine/markov.ts) and persistence in [src/db/index.ts](src/db/index.ts).
 
 ## Commands
 - Build: `npm run build`
@@ -13,7 +13,7 @@
 
 ## Validation
 - After TypeScript changes, run `npm run build`.
-- There is currently no automated test script in `package.json`.
+- Run `npm run test` to execute the compiled test suite with c8 coverage reporting.
 
 ## Architecture
 - [src/index.ts](src/index.ts): loads env/config, opens the database, starts IRC and optional Discord connectors, handles shutdown.

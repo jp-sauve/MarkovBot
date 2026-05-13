@@ -55,7 +55,7 @@ function pickWeighted<T extends { frequency: number }>(items: T[]): T | null {
   return items.at(-1) ?? null;
 }
 
-function trimToken(token: string): string {
+export function trimToken(token: string): string {
   const trimmed = token.replace(/^[^\p{L}\p{N}']+|[^\p{L}\p{N}']+$/gu, "");
   const withoutDetachedQuotes = trimmed.replace(
     /(?<![\p{L}\p{N}])'+|'+(?![\p{L}\p{N}])/gu,
@@ -76,7 +76,7 @@ function pickRandom<T>(items: T[]): T | undefined {
   return items[Math.floor(Math.random() * items.length)];
 }
 
-function postProcess(text: string): string {
+export function postProcess(text: string): string {
   if (!text) {
     return text;
   }
@@ -117,7 +117,7 @@ function postProcess(text: string): string {
   return `${capitalized}${questionWords.has(lastWord) ? "?" : "."}`;
 }
 
-function isStructurallyCompleteResponse(
+export function isStructurallyCompleteResponse(
   text: string,
   minResponseWords: number
 ): boolean {
